@@ -1,0 +1,50 @@
+
+
+
+
+
+
+
+
+
+
+start thread 2
+
+
+
+
+x = counter
+x = x - 1
+
+
+
+counter = x
+
+end thread 2
+
+""" thread lock module """
+
+import threading
+
+
+shared memory
+
+counter = 2
+
+
+start thread 1
+
+
+x = counter
+
+
+
+x = x - 1
+counter = x
+
+
+
+
+
+
+end thread 1
