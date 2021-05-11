@@ -11,23 +11,23 @@ def display_message(msg: str) -> None:
 
 if __name__ == "__main__":
 
-    # start = time.time()
-    # rates = get_rates("https://api.ratesapi.io")
-    # print("".join([
-    #     "remote api: ",
-    #     str(len(rates)),
-    #     " requests in ",
-    #     str(time.time() - start),
-    #     " seconds"]))
+    start = time.time()
+    rates = get_rates("https://api.ratesapi.io")
+    print("".join([
+        "remote api: ",
+        str(len(rates)),
+        " requests in ",
+        str(time.time() - start),
+        " seconds"]))
 
-    # start = time.time()
-    # rates = get_rates_threaded("https://api.ratesapi.io")
-    # print("".join([
-    #     "remote threaded api: ",
-    #     str(len(rates)),
-    #     " requests in ",
-    #     str(time.time() - start),
-    #     " seconds"]))
+    start = time.time()
+    rates = get_rates_threaded("https://api.ratesapi.io")
+    print("".join([
+        "remote threaded api: ",
+        str(len(rates)),
+        " requests in ",
+        str(time.time() - start),
+        " seconds"]))
 
     start = time.time()
     rates = get_rates("http://127.0.0.1:5000")
@@ -46,4 +46,3 @@ if __name__ == "__main__":
         " requests in ",
         str(time.time() - start),
         " seconds"]))
-        

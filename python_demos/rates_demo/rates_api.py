@@ -1,9 +1,11 @@
 """ rates api module """
 
 from typing import Any
+from random import randint
 import pathlib
 import csv
 import math
+import time
 from flask import Flask, jsonify, abort, request
 
 rates: dict[str, dict[str, Any]] = {}
@@ -18,6 +20,8 @@ def check() -> str:
 @app.route("/api/<rate_date>")
 def rates_by_date(rate_date: str) -> Any:
     """ rates by date rest endpoint """
+
+    time.sleep(randint(1,5) * 0.01)
 
     try:
 
@@ -85,7 +89,11 @@ def start_rates_api() -> None:
 
     print(len(rates))
 
+    # notify
     app.run()
+
+    # ok I am running you may proceed - this is not possible because
+    # app.run blocks
 
 if __name__ == "__main__":
     start_rates_api()
