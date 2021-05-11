@@ -2,6 +2,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
+import threading
 
 import requests
 
@@ -34,7 +35,7 @@ def get_rate_task(base_url: str, business_day: date, rates: list[str]) -> None:
     response = requests.request("GET", rates_url)
     rates.append(response.text)
 
-def get_rates_threaded(base_url: str) -> list[str]:
+def get_rates_threadpool(base_url: str) -> list[str]:
     """ get rates using multiple threads """
 
     start_date = date(2021, 1, 1)
@@ -48,5 +49,24 @@ def get_rates_threaded(base_url: str) -> list[str]:
             [ (base_url, business_day, rates) for business_day
                 in business_days(start_date, end_date)]
         )
+
+    return rates
+
+def get_rates_threaded(base_url: str) -> list[str]:
+    """ get rates using multiple threads """
+
+    start_date = date(2021, 1, 1)
+    end_date = date(2021, 1, 31)
+    rates: list[str] = []
+    threads: list[threading.Thread] = []
+
+    for business_day in business_days(start_date, end_date):
+        a_thread = threading.Thread(
+            target=get_rate_task, args=(base_url, business_day, rates))
+        a_thread.start()
+        threads.append(a_thread)
+
+    for a_thread in threads:
+        a_thread.join()
 
     return rates
