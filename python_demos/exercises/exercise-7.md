@@ -16,3 +16,5 @@ In the Rates Demo App:
 Hint: Python has support for JSON parsing in the Standard Library.
 
 3. Use a combination of try/except, timeouts, and Thread Events to gracefully end program when all processing has completed. Output the number of parsed JSON string that were processed by the second thread.
+
+4. Using the various mechanisms previously employed, run an additional thread (third thread in the pipeline) to output each rate dictionary to a CSV file.
