@@ -1,4 +1,4 @@
-""" business days demo """
+""" business days module """
 
 from datetime import timedelta, date
 from collections.abc import Generator

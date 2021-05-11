@@ -12,9 +12,19 @@ def display_message(msg: str) -> None:
 if __name__ == "__main__":
 
     start = time.time()
-    get_rates("https://api.ratesapi.io")
-    print(f"remote api: {time.time() - start}")
+    rates = get_rates("https://api.ratesapi.io")
+    print("".join([
+        "remote api: ",
+        str(len(rates)),
+        " requests in ",
+        str(time.time() - start),
+        " seconds"]))
 
-    # start = time.time()
-    # get_rates("http://localhost:5000")
-    # print(f"local api: {time.time() - start}")
+    start = time.time()
+    rates = get_rates("http://localhost:5000")
+    print("".join([
+        "local api: ",
+        str(len(rates)),
+        " requests in ",
+        str(time.time() - start),
+        " seconds"]))

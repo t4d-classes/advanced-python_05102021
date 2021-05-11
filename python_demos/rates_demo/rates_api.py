@@ -82,6 +82,8 @@ def start_rates_api() -> None:
 
     rates = load_rates_history()
 
+    print(len(rates))
+
     app.run()
 
 if __name__ == "__main__":
