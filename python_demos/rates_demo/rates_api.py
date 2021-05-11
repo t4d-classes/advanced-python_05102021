@@ -6,7 +6,7 @@ import csv
 import math
 from flask import Flask, jsonify, abort, request
 
-rates: list[dict[str, Any]] = []
+rates: dict[str, dict[str, Any]] = {}
 
 app = Flask(__name__)
 
@@ -19,40 +19,41 @@ def check() -> str:
 def rates_by_date(rate_date: str) -> Any:
     """ rates by date rest endpoint """
 
-    for rate in rates:
+    try:
 
-        if rate["Date"] == rate_date:
+        rate = rates[rate_date]
 
-            base_country = request.args.get("base", "EUR")
+        base_country = request.args.get("base", "EUR")
 
-            if "symbols" in request.args:
-                country_symbols = request.args["symbols"].split(",")
-            else:
-                country_symbols = [col for col in rate if col != "Date"]
+        if "symbols" in request.args:
+            country_symbols = request.args["symbols"].split(",")
+        else:
+            country_symbols = [col for col in rate if col != "Date"]
 
-            country_rates = {
-                country_code: country_rate / rate[base_country]
-                for (country_code, country_rate) in rate.items()
-                if country_code != "Date" and
-                country_code in country_symbols and
-                not math.isnan(country_rate)
-            }
+        country_rates = {
+            country_code: country_rate / rate[base_country]
+            for (country_code, country_rate) in rate.items()
+            if country_code != "Date" and
+            country_code in country_symbols and
+            not math.isnan(country_rate)
+        }
 
-            return jsonify({
-                "date": rate["Date"],
-                "base": base_country,
-                "rates": country_rates,
-            })
+        return jsonify({
+            "date": rate["Date"],
+            "base": base_country,
+            "rates": country_rates,
+        })
 
-    abort(404)
+    except KeyError:
+        abort(404)
 
 
 
 
-def load_rates_history() -> list[dict[str, Any]]:
+def load_rates_history() -> dict[str, dict[str, Any]]:
     """ load history of rates into a list of dictionaries """
 
-    rates_history: list[dict[str, Any]] = []
+    rates_history: dict[str, dict[str, Any]] = {}
 
     data_file_path = pathlib.Path("..", "data", "eurofxref-hist.csv")
 
@@ -70,7 +71,7 @@ def load_rates_history() -> list[dict[str, Any]]:
                     else:
                         rate_entry[rate_col] = float(rate_row[rate_col])
 
-            rates_history.append(rate_entry)
+            rates_history[rate_row["Date"]] = rate_entry
 
     return rates_history
 
