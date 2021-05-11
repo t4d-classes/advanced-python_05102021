@@ -8,17 +8,22 @@
 
 
 
+
+
 start thread 2
 
 
+lock_counter2.acquire
 
-
-x = counter
+lock_counter1.acquire
+x = counter1
+y = counter2
 x = x - 1
-
-
-
-counter = x
+y = y - 1
+counter1 = x
+counter2 = y
+lock_counter1.release
+lock_counter2.release
 
 end thread 2
 
@@ -26,25 +31,26 @@ end thread 2
 
 import threading
 
+locks
+lock_counter1
+lock_counter2
 
 shared memory
-
-counter = 2
-
+counter1 = 2
+counter2 = 4
 
 start thread 1
 
+lock_counter1.acquire
 
-x = counter
-
-
-
+lock_counter2.acquire
+x = counter1
+y = counter2
 x = x - 1
-counter = x
-
-
-
-
-
+y = y - 1
+counter1 = x
+counter2 = y
+lock_counter1.release
+lock_counter2.release
 
 end thread 1
