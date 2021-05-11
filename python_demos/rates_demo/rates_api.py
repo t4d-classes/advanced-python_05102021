@@ -6,11 +6,15 @@ import pathlib
 import csv
 import math
 import time
+import logging
 from flask import Flask, jsonify, abort, request
 
 rates: dict[str, dict[str, Any]] = {}
 
 app = Flask(__name__)
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 @app.route("/check")
 def check() -> str:

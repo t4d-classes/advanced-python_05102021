@@ -2,7 +2,6 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
-import time
 
 import requests
 
@@ -16,14 +15,12 @@ def get_rates(base_url: str) -> list[str]:
     rates: list[str] = []
 
     for business_day in business_days(start_date, end_date):
-        # start = time.time()
         rates_url = "".join([base_url, "/api/",
                              business_day.strftime("%Y-%m-%d"),
                              "?base=USD&symbols=EUR"])
 
         response = requests.request("GET", rates_url)
         rates.append(response.text)
-        # print(f"request time: {time.time() - start}")
 
     return rates
 
