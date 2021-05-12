@@ -15,20 +15,21 @@ class RateServerError(Exception):
     """ rate server error class """
 
 
-def command_start_server(server_process: Optional[mp.Process]) -> None:
+def command_start_server(server_process: Optional[mp.Process]) -> mp.Process:
     """ command start server """
 
     if server_process and server_process.is_alive():
         print("server is already running")
-    elif server_process:
-        # step 1 - create a new process object 
-        # step 2 - start the new process object
-        print("server started")
     else:
-        raise RateServerError("server process cannot be null")
+        server_process = mp.Process(target=rate_server)
+        server_process.start()
+        print("server started")
+
+    return server_process
 
 
-def command_stop_server(server_process: Optional[mp.Process]) -> None:
+def command_stop_server(
+    server_process: Optional[mp.Process]) -> Optional[mp.Process]:
     """ command stop server """
 
     if not server_process or not server_process.is_alive():
@@ -36,6 +37,27 @@ def command_stop_server(server_process: Optional[mp.Process]) -> None:
     else:
         server_process.terminate()
         print("server stopped")
+
+    server_process = None
+
+    return server_process
+
+
+def command_server_status(server_process: Optional[mp.Process]) -> None:
+    """ outputs the status of the server """
+
+    if server_process and server_process.is_alive():
+        print("server is running")
+    else:
+        print("server is stopped")
+
+
+def command_exit(server_process: Optional[mp.Process]) -> None:
+    """ clean up resources for exit """
+
+    if server_process and server_process.is_alive():
+        server_process.terminate()
+
 
 
 def main() -> None:
@@ -50,22 +72,17 @@ def main() -> None:
             command = input("> ")
 
             if command == "start":
-                command_start_server(server_process)
+                server_process = command_start_server(server_process)
             elif command == "stop":
-                command_stop_server(server_process)
-            # step 3 - add a command named "status" that outputs to the
-            # console if the server is current running or not
-            # hint: follow the command function pattern used by the other
-            # commands
+                server_process = command_stop_server(server_process)
+            elif command == "status":
+                command_server_status(server_process)
             elif command == "exit":
-                # step 4 - terminate the "server_process" if the
-                # "server_process" is an object and is alive
+                command_exit(server_process)
                 break
 
     except KeyboardInterrupt:
-        # step 5 - terminate the "server_process" if the
-        # "server_process" is an object and is alive
-        pass
+        command_exit(server_process)
 
     sys.exit(0)
 

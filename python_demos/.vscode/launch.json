@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Rates App - Rates Server Module",
+            "type": "python",
+            "request": "launch",
+            "module": "rates_app.rates_server"
+        },
+        {
             "name": "Python: Rates Demo Module",
             "type": "python",
             "request": "launch",
