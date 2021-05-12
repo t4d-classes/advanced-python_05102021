@@ -3,6 +3,7 @@
 from typing import Optional
 import multiprocessing as mp
 import sys
+import socket
 
 
 def rate_server() -> None:
@@ -20,8 +21,18 @@ def rate_server() -> None:
     # wire up an echo server which receives a string and echos back to
     # the client the string that is received
 
-    while True:
-        pass
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_server:
+        
+        socket_server.bind(('127.0.0.1', 5000))
+        socket_server.listen()
+
+        conn, _ = socket_server.accept()
+
+        conn.sendall(b"Connected to the Rate Server.")
+
+        while True:
+            message = conn.recv(2048)
+            conn.sendall(message)
 
 
 class RateServerError(Exception):
