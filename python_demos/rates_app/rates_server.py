@@ -7,11 +7,30 @@ import sys
 import socket
 import threading
 
-# Create "ClientConnectionThread" class that inherits from "Thread"
+# Add support the following client command
 
-# Each time a client connects, a new thread should be created with the
-# "ClientConnectionThread" class. The class is responsible for sending the
-# welcome message and interacting with the client, echoing messages
+# GET 2019-01-03 EUR
+
+# GET is the command name
+# 2019-01-03 is the date of the current rates to retrieve
+# EUR is the currency symbol to retrieve, DO NOT USE USD
+
+# Call the Rates API using the USD as the base to get the currency rate
+# for the specified year
+
+# Ideally your code will do the following:
+
+# 1. Use a regular expression with named capture groups to extract parts
+# of the command
+
+# 2. Add a function named "process_client_command" to
+# "ClientConnectionThread" that will process the parsed command including
+# calling the API, extracting the API response, and send back the rate
+# value to the client
+
+# 3. Send back an error message for an incorrectly formatted command or an
+# unsupported command name (only the GET command is supported)
+
 
 class ClientConnectionThread(threading.Thread):
     """ client connection thread class """
