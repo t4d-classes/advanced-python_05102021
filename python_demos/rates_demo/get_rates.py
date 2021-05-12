@@ -25,32 +25,31 @@ def get_rates(base_url: str) -> list[str]:
 
     return rates
 
-def get_rate_task(base_url: str, business_day: date, rates: list[str]) -> None:
+
+def get_rate_task(base_url: str, business_day: date) -> str:
     """ get rate for a single day from the rest api """
 
     rates_url = "".join([base_url, "/api/",
                              business_day.strftime("%Y-%m-%d"),
                              "?base=USD&symbols=EUR"])
 
-    response = requests.request("GET", rates_url)
-    rates.append(response.text)
+    return requests.request("GET", rates_url).text
+
 
 def get_rates_threadpool(base_url: str) -> list[str]:
     """ get rates using multiple threads """
 
     start_date = date(2021, 1, 1)
     end_date = date(2021, 1, 31)
-    rates: list[str] = []
 
     with ThreadPoolExecutor() as executor:
 
-        executor.map(
+        return list(executor.map(
             lambda params: get_rate_task(*params),
-            [ (base_url, business_day, rates) for business_day
+            [ (base_url, business_day) for business_day
                 in business_days(start_date, end_date)]
-        )
+        ))
 
-    return rates
 
 def get_rates_threaded(base_url: str) -> list[str]:
     """ get rates using multiple threads """
