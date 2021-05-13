@@ -15,11 +15,14 @@ def main() -> None:
 
     with pyodbc.connect(";".join(docker_conn_options)) as con:
 
+        rates_id = 4
+
         sql = " ".join([
             "select RatesID, ClosingDate, CurrencySymbol, ExchangeRate",
-            "from rates"])
+            "from rates",
+            "where RatesID = ?"])
 
-        rates = con.execute(sql)
+        rates = con.execute(sql, (rates_id,))
 
         for rate in rates:
             print(rate)

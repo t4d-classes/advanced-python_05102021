@@ -1,6 +1,7 @@
 """ db connection demo """
 
 import pyodbc
+from datetime import date
 
 docker_conn_options = [
     "DRIVER={ODBC Driver 17 for SQL Server}",
@@ -16,13 +17,12 @@ def main() -> None:
     with pyodbc.connect(";".join(docker_conn_options)) as con:
 
         sql = " ".join([
-            "select RatesID, ClosingDate, CurrencySymbol, ExchangeRate",
-            "from rates"])
+            "insert into Rates (ClosingDate, CurrencySymbol, ExchangeRate)",
+            "values(?, ?, ?)"])
 
-        rates = con.execute(sql)
+        # con.execute(sql, (date(2021, 2, 23), 'EUR', 1.12,))
+        con.execute(sql, ('2021-02-23', 'EUR', 1.12,))
 
-        for rate in rates:
-            print(rate)
 
 
 if __name__ == "__main__":
