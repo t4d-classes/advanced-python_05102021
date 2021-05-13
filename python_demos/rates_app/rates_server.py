@@ -48,6 +48,28 @@ import requests
 # symbol in the URL, if multiple symbols are needed, then call the Rates API
 # multiple times using a ThreadPoolExecutor.
 
+# Task 4 - YAML Config Files
+
+# Add server and client yaml configuration files for storing the host
+# and port. Both the server and client yaml files should have the same
+# structure. The host and port for server config is used for "bind" and
+# for the client config is used for "connect". Also, store the database
+# connection information in the server yaml configuration file
+
+# Task 5: Client Connection CSV Log
+
+# On the server, on each client connection and disconnection, record
+# information about the connection in a CSV log with the following structure.
+
+# The host and the port are the client's host and port
+
+# The addr will contain the client host and port
+# conn, addr = socket_server.accept()
+
+# <thread_id>,<date>,<host>,<port>,connect
+# <thread_id>,<date>,<host>,<port>,disconnect
+
+
 CLIENT_COMMAND_PARTS = [
     r"^(?P<name>[A-Z]*) ",
     r"(?P<date>[0-9]{4}-[0-9]{2}-[0-9]{2}) ",
