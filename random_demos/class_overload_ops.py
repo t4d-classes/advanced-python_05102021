@@ -22,7 +22,7 @@ class ItemList:
         return next(self.__current_iter)
 
 nums = ItemList()
-nums += 2
+nums = nums + 2
 nums += 4
 nums += 6
 
